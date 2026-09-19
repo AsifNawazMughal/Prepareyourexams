@@ -6,6 +6,7 @@ export type Book = Models.Document & {
   title: string;
   description?: string | null;
   classLevel: ClassLevel;
+  paperScheme?: string | null;
 };
 
 export type Chapter = Models.Document & {

@@ -34,6 +34,7 @@ export async function createBook(
 ) {
   const title = String(formData.get("title") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
+  const paperScheme = String(formData.get("paperScheme") ?? "").trim();
   if (!title) return { error: "Book title is required." };
 
   const { databases } = await createSessionClient();
@@ -41,7 +42,7 @@ export async function createBook(
     databaseId: appwriteConfig.databaseId,
     collectionId: appwriteConfig.booksCollectionId,
     documentId: ID.unique(),
-    data: { title, description: description || null, classLevel },
+    data: { title, description: description || null, classLevel, paperScheme: paperScheme || null },
   });
 
   revalidatePath(`/class/${classLevel}`);
@@ -55,6 +56,7 @@ export async function renameBook(
 ) {
   const title = String(formData.get("title") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
+  const paperScheme = String(formData.get("paperScheme") ?? "").trim();
   if (!title) return { error: "Book title is required." };
 
   const { databases } = await createSessionClient();
@@ -62,7 +64,7 @@ export async function renameBook(
     databaseId: appwriteConfig.databaseId,
     collectionId: appwriteConfig.booksCollectionId,
     documentId: bookId,
-    data: { title, description: description || null },
+    data: { title, description: description || null, paperScheme: paperScheme || null },
   });
 
   revalidatePath(`/class/${book.classLevel}`);

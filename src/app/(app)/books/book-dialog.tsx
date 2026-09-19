@@ -8,6 +8,7 @@ import type { ClassLevel } from "@/lib/appwrite/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -22,7 +23,7 @@ export function BookDialog({
   book,
 }: {
   classLevel?: ClassLevel;
-  book?: { $id: string; title: string; description?: string | null };
+  book?: { $id: string; title: string; description?: string | null; paperScheme?: string | null };
 }) {
   const [open, setOpen] = useState(false);
   const action = book ? renameBook.bind(null, book.$id) : createBook.bind(null, classLevel!);
@@ -49,7 +50,7 @@ export function BookDialog({
           )
         }
       />
-      <DialogContent>
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{book ? "Rename book" : "Add a book"}</DialogTitle>
         </DialogHeader>
@@ -61,6 +62,17 @@ export function BookDialog({
           <div className="flex flex-col gap-2">
             <Label htmlFor="description">Description (optional)</Label>
             <Input id="description" name="description" defaultValue={book?.description ?? ""} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="paperScheme">Paper scheme (optional)</Label>
+            <Textarea
+              id="paperScheme"
+              name="paperScheme"
+              rows={8}
+              placeholder="e.g. Q.1 MCQs — 10 marks&#10;Q.2 Short questions (Ch 1,2,4) — attempt 4 of 6 — 8 marks&#10;..."
+              defaultValue={book?.paperScheme ?? ""}
+              className="font-mono text-xs"
+            />
           </div>
           {state?.error && <p className="text-sm text-destructive">{state.error}</p>}
           <DialogFooter>

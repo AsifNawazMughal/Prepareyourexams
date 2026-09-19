@@ -33,7 +33,9 @@ export default async function BookPage({ params }: { params: Promise<{ bookId: s
           {book.description && <p className="text-muted-foreground">{book.description}</p>}
         </div>
         <div className="flex items-center gap-1">
-          <BookDialog book={{ $id: book.$id, title: book.title, description: book.description }} />
+          <BookDialog
+            book={{ $id: book.$id, title: book.title, description: book.description, paperScheme: book.paperScheme }}
+          />
           <ConfirmDeleteButton
             action={deleteBook.bind(null, bookId, book.classLevel)}
             title={`Delete "${book.title}"?`}
@@ -43,6 +45,13 @@ export default async function BookPage({ params }: { params: Promise<{ bookId: s
           <ChapterDialog bookId={bookId} />
         </div>
       </div>
+
+      {book.paperScheme && (
+        <details className="rounded-lg border p-4">
+          <summary className="cursor-pointer font-medium">Paper scheme</summary>
+          <pre className="mt-3 whitespace-pre-wrap font-sans text-sm text-muted-foreground">{book.paperScheme}</pre>
+        </details>
+      )}
 
       {chapters.length === 0 ? (
         <p className="text-muted-foreground">No chapters yet. Add the first one.</p>
