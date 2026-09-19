@@ -158,15 +158,30 @@ async function main() {
     "notes bucket"
   );
 
-  // one admin account
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  console.log("\nCreate your admin login:");
-  const email = await rl.question("Admin email: ");
-  const password = await rl.question("Admin password (min 8 chars): ");
-  rl.close();
+  // one admin account — via ADMIN_EMAIL/ADMIN_PASSWORD/ADMIN_NAME env vars,
+  // or interactively if stdin is a real terminal (piped input can't
+  // reliably answer more than one readline prompt at a time).
+  let email = process.env.ADMIN_EMAIL;
+  let password = process.env.ADMIN_PASSWORD;
+  let name = process.env.ADMIN_NAME || "Admin";
+
+  if (!email || !password) {
+    if (!process.stdin.isTTY) {
+      console.error(
+        "\nSet ADMIN_EMAIL and ADMIN_PASSWORD (and optionally ADMIN_NAME) env vars, or run this in an interactive terminal."
+      );
+      process.exit(1);
+    }
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    console.log("\nCreate your admin login:");
+    email = await rl.question("Admin email: ");
+    password = await rl.question("Admin password (min 8 chars): ");
+    name = (await rl.question("Admin display name (optional): ")) || "Admin";
+    rl.close();
+  }
 
   await ignoreExists(
-    users.create({ userId: ID.unique(), email, password, name: "Admin" }),
+    users.create({ userId: ID.unique(), email, password, name }),
     `admin user ${email}`
   );
 
