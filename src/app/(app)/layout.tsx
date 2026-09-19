@@ -17,8 +17,11 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
           <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
             Overview
           </Link>
-          <Link href="/books" className="text-sm text-muted-foreground hover:text-foreground">
-            Books
+          <Link href="/class/9" className="text-sm text-muted-foreground hover:text-foreground">
+            Class 9
+          </Link>
+          <Link href="/class/10" className="text-sm text-muted-foreground hover:text-foreground">
+            Class 10
           </Link>
         </nav>
         <div className="flex items-center gap-3">

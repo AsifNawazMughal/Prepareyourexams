@@ -1,8 +1,11 @@
 import type { Models } from "node-appwrite";
 
+export type ClassLevel = "9" | "10";
+
 export type Book = Models.Document & {
   title: string;
   description?: string | null;
+  classLevel: ClassLevel;
 };
 
 export type Chapter = Models.Document & {

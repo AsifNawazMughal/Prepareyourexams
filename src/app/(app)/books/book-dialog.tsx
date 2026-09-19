@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { Plus, Pencil } from "lucide-react";
 import { createBook, renameBook } from "@/lib/appwrite/actions/books";
 import { useCloseOnSuccess } from "@/hooks/use-close-on-success";
+import type { ClassLevel } from "@/lib/appwrite/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,12 +18,14 @@ import {
 } from "@/components/ui/dialog";
 
 export function BookDialog({
+  classLevel,
   book,
 }: {
+  classLevel?: ClassLevel;
   book?: { $id: string; title: string; description?: string | null };
 }) {
   const [open, setOpen] = useState(false);
-  const action = book ? renameBook.bind(null, book.$id) : createBook;
+  const action = book ? renameBook.bind(null, book.$id) : createBook.bind(null, classLevel!);
   const [state, formAction, isPending] = useActionState(action, undefined);
   useCloseOnSuccess(isPending, state?.error, () => setOpen(false));
 

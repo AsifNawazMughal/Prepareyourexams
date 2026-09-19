@@ -22,8 +22,8 @@ export default async function BookPage({ params }: { params: Promise<{ bookId: s
   return (
     <main className="flex flex-1 flex-col gap-6 p-8">
       <div>
-        <Button variant="ghost" size="sm" render={<Link href="/books" />}>
-          <ArrowLeft className="size-4" /> Back to books
+        <Button variant="ghost" size="sm" render={<Link href={`/class/${book.classLevel}`} />}>
+          <ArrowLeft className="size-4" /> Back to Class {book.classLevel}
         </Button>
       </div>
 
@@ -35,7 +35,7 @@ export default async function BookPage({ params }: { params: Promise<{ bookId: s
         <div className="flex items-center gap-1">
           <BookDialog book={{ $id: book.$id, title: book.title, description: book.description }} />
           <ConfirmDeleteButton
-            action={deleteBook.bind(null, bookId)}
+            action={deleteBook.bind(null, bookId, book.classLevel)}
             title={`Delete "${book.title}"?`}
             description="This also deletes all of its chapters, notes, MCQs, and repeated questions. This cannot be undone."
             label="Delete book"
